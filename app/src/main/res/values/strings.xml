@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CursoAndroidClase2</string>
+    <string name="hola_name">Hello World Prueba</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="label_title">Title</string>
+    <string name="label_body">Body</string>
+    <string name="label_volver">Volver</string>
+    <string name="label_enviar">Enviar</string>
+</resources>
