@@ -6,4 +6,5 @@
     <color name="my_snackbar_background">#683AB8</color>
     <color name="my_snackbar_text_color">#68E91E</color>
     <color name="my_snackbar_text_action">#FFC107</color>
+    <color name="custom_snackbar_bg">#3F51B5</color>
 </resources>

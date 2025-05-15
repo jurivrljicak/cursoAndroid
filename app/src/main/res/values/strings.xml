@@ -9,4 +9,5 @@
     <string name="label_body">Body</string>
     <string name="label_volver">Volver</string>
     <string name="label_enviar">Enviar</string>
+    <string name="label_retry">Retry</string>
 </resources>

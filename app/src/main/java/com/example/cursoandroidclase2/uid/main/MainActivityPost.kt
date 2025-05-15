@@ -1,12 +1,16 @@
 package com.example.cursoandroidclase2.uid.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cursoandroidclase2.R.id.snackbar_text
 import com.example.cursoandroidclase2.data.db.DatabaseProvider
 import com.example.cursoandroidclase2.data.db.Post
 import com.google.android.material.snackbar.Snackbar
@@ -60,6 +65,7 @@ class MainActivityPost : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -128,7 +134,7 @@ class MainActivityPost : AppCompatActivity() {
             }.show() */
 
            // como en el snackbar no tengo acceso a la view, se accede luego a la view para setear el tamaño
-            snackbar.apply {
+      /*      snackbar.apply {
                 setBackgroundTint(ContextCompat.getColor(context, R.color.my_snackbar_background))
                 setTextColor(ContextCompat.getColor(context, R.color.my_snackbar_text_color))
                 setActionTextColor(ContextCompat.getColor(context, R.color.my_snackbar_text_action))
@@ -138,7 +144,26 @@ class MainActivityPost : AppCompatActivity() {
                 }
             }
             snackbar.setAction("Cerrar"){
-            }.show()
+            }.show()*/
+
+            val customView =  LayoutInflater.from(this)
+                .inflate(R.layout.custom_snackbar, null)
+
+            customView.findViewById<TextView>(R.id.snackbar_text)
+            customView.findViewById<Button>(R.id.snackbar_button).apply {
+                setOnClickListener {
+                    Toast.makeText(context, "Reintentando...", Toast.LENGTH_LONG).show()
+                }
+            }
+
+
+            val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
+
+            snackbarLayout.setPadding(0, 0, 0, 0)
+            snackbarLayout.removeAllViews()
+            snackbarLayout.addView(customView)
+            snackbar.show()
+
         }
         viewModel.loadPosts(this)
 
