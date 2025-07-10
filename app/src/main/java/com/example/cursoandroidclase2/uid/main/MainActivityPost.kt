@@ -87,6 +87,7 @@ class MainActivityPost : AppCompatActivity() {
 //        }
         adapter = PostAdapter(
             onDeleteClick = { post ->
+                throw RuntimeException("Test Crash") // Force a crash
                 val nuevaLista = adapter.currentList.toMutableList().apply { remove(post) }
                 adapter.submitList(nuevaLista)
             },

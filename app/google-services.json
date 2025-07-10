@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "903961450895",
+    "project_id": "curso-android-cbr",
+    "storage_bucket": "curso-android-cbr.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903961450895:android:aff1c1a73759274fd553fa",
+        "android_client_info": {
+          "package_name": "com.example.cursoandroidclase2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAon8DESllGnnMkNcQVapkhZUluwM5jjpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
