@@ -27,6 +27,8 @@ import com.example.cursoandroidclase2.R.id.snackbar_text
 import com.example.cursoandroidclase2.data.db.DatabaseProvider
 import com.example.cursoandroidclase2.data.db.Post
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.launch
 
 class MainActivityPost : AppCompatActivity() {
@@ -87,7 +89,9 @@ class MainActivityPost : AppCompatActivity() {
 //        }
         adapter = PostAdapter(
             onDeleteClick = { post ->
-                throw RuntimeException("Test Crash") // Force a crash
+                //throw RuntimeException("Test Crash") // Force a crash
+                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+                FirebaseCrashlytics.getInstance().log("Mensaje desde Lomas de Zamora")
                 val nuevaLista = adapter.currentList.toMutableList().apply { remove(post) }
                 adapter.submitList(nuevaLista)
             },
@@ -167,6 +171,9 @@ class MainActivityPost : AppCompatActivity() {
 
         }
         viewModel.loadPosts(this)
+
+        FirebaseApp.initializeApp(this);
+
 
     }
 
