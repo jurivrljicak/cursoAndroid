@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
@@ -26,12 +27,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cursoandroidclase2.R.id.snackbar_text
 import com.example.cursoandroidclase2.data.db.DatabaseProvider
 import com.example.cursoandroidclase2.data.db.Post
+import com.example.cursoandroidclase2.util.RemoteConfigManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.coroutines.launch
 
 class MainActivityPost : AppCompatActivity() {
+
+    private val TAG = MainActivityPost :: class.java.simpleName
     private val viewModel: PostViewModel by viewModels() // ✅ esta es la correcta
 
     private lateinit var adapter: PostAdapter
@@ -173,8 +179,46 @@ class MainActivityPost : AppCompatActivity() {
         viewModel.loadPosts(this)
 
         FirebaseApp.initializeApp(this);
+/*
+
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(5)
+            .build()
+
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+
+        val label = remoteConfig.getString("label")
+
+        Log.v("main", "Levantamos remote config $label")
+
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val label2 = remoteConfig.getString("label2")
+                    Log.v("main", "Levantamos remote config callback $label2")
+                } else {
+                    Log.e("RemoteConfig", "Fetch failed", task.exception)
+                }
+            }
+*/
+
+    }
+
+    override fun onStart() {
+        super.onStart()
 
 
+        RemoteConfigManager.fetchAndActivate { success ->
+            if (success) {
+                val label = RemoteConfigManager.getString("label")
+              //  val enabled = RemoteConfigManager.getBoolean("feature_enabled")
+                Log.d(TAG, "Mensaje: $label")
+            } else {
+                Log.e(TAG, "Error al cargar Remote Config")
+            }
+        }
     }
 
 }
