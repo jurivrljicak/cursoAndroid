@@ -9,7 +9,15 @@ object RemoteConfigManager {
 
     private val TAG = RemoteConfigManager :: class.java.simpleName
 
-    private val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+    private val remoteConfig: FirebaseRemoteConfig by lazy {
+        FirebaseRemoteConfig.getInstance().apply {
+            val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build()
+            setConfigSettingsAsync(configSettings)
+            setDefaultsAsync(R.xml.remote_config_defaults)
+        }
+    }
 
     init {
         val configSettings = FirebaseRemoteConfigSettings.Builder()

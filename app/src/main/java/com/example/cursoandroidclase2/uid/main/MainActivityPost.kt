@@ -31,6 +31,9 @@ import com.example.cursoandroidclase2.util.RemoteConfigManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.coroutines.launch
@@ -41,6 +44,8 @@ class MainActivityPost : AppCompatActivity() {
     private val viewModel: PostViewModel by viewModels() // ✅ esta es la correcta
 
     private lateinit var adapter: PostAdapter
+
+    private var fireBaseOn = false
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -96,8 +101,15 @@ class MainActivityPost : AppCompatActivity() {
         adapter = PostAdapter(
             onDeleteClick = { post ->
                 //throw RuntimeException("Test Crash") // Force a crash
-                FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-                FirebaseCrashlytics.getInstance().log("Mensaje desde Lomas de Zamora")
+             //   FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+              //  FirebaseCrashlytics.getInstance().log("Mensaje desde Lomas de Zamora")
+
+
+                Firebase.crashlytics.log("Entré a MainActivity")
+                Firebase.crashlytics.setUserId("juri")
+                Firebase.crashlytics.recordException(Exception("Error manual de juri"))
+
+
                 val nuevaLista = adapter.currentList.toMutableList().apply { remove(post) }
                 adapter.submitList(nuevaLista)
             },
@@ -209,16 +221,34 @@ class MainActivityPost : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        if(!fireBaseOn) {
 
-        RemoteConfigManager.fetchAndActivate { success ->
-            if (success) {
-                val label = RemoteConfigManager.getString("label")
-              //  val enabled = RemoteConfigManager.getBoolean("feature_enabled")
-                Log.d(TAG, "Mensaje: $label")
-            } else {
-                Log.e(TAG, "Error al cargar Remote Config")
+            fireBaseOn = !fireBaseOn
+
+            RemoteConfigManager.fetchAndActivate { success ->
+                if (success) {
+                    val label = RemoteConfigManager.getString("label")
+                    //  val enabled = RemoteConfigManager.getBoolean("feature_enabled")
+                    Log.d(TAG, "Mensaje: $label")
+                } else {
+                    Log.e(TAG, "Error al cargar Remote Config")
+                }
+            }
+
+
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    Log.d("FCM", "Token FCM: $token")
+                } else {
+                    Log.w("FCM", "No se pudo obtener token", task.exception)
+                }
             }
         }
+
+
+
+
     }
 
 }

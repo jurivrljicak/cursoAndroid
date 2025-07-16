@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><defaults>
   <entry>
+    <key>condicion</key>
+    <value>true</value>
+  </entry>
+  <entry>
     <key>label</key>
-    <value>Mi Label</value>
+    <value>Mi Label 2</value>
   </entry>
 </defaults>
